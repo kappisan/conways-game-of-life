@@ -1,19 +1,69 @@
 <html>
     <head>
         <title>Conways Game of Life</title>
+
+        <style>
+
+            .board{
+                position: relative;
+                top: 0;
+                right: 0;
+                bottom: 0;
+                left: 0;
+                margin: auto;
+                
+                display: flex;
+                flex-wrap: wrap;
+                max-width: 480px;
+                max-height: 480px;
+                width: 100vw;
+                height: 100vw;
+                box-shadow: 0 10px 10px -5px rgba(0,0,0,.75);
+                font-size: 0;
+            }
+
+            .box{
+                width: 12.5%;
+                height: 12.5%;
+                font-size: 2vw;
+                line-height: 12vw;
+            }
+
+            .box:nth-child(n+1):nth-child(-n+16){
+                color: #222;
+            }
+
+            .alive {
+                background-color: rgba(135,0,0,.5);
+            }
+
+
+        </style>
     </head>
     <body>
+
+        <div id="board" class="board">
+
+        </div> 
+
+
         <script>
             // Define the grid size
-            const ROWS = 12;
-            const COLS = 12;
+            const ROWS = 10;
+            const COLS = 10;
+            const STEPS = 10;
+
+            let board = document.getElementById("board");
 
             // Define the initial state of the grid
             let grid = new Array(ROWS);
             for (let i = 0; i < ROWS; i++) {
-            grid[i] = new Array(COLS);
+                grid[i] = new Array(COLS);
                 for (let j = 0; j < COLS; j++) {
                     grid[i][j] = Math.round(Math.random());
+                    const node = document.createElement("div");
+                    node.setAttribute("class", `box row-${i} column-${j}`);
+                    board.appendChild(node);
                 }
             }
 
@@ -68,12 +118,15 @@
             // Print the initial state of the grid
             printGrid();
 
-            // Run the simulation for 10 steps and print the state of the grid after each step
-            for (let step = 1; step <= 10; step++) {
+            // Run the simulation for number of steps and print the state of the grid to console after each step
+            let step = 1;
+            let iterations = setInterval(function() {
                 getNextState();
                 console.log(`\nStep ${step}:`);
                 printGrid();
-            }
+                step++;
+                if (step > STEPS) clearInterval(iterations);
+            }, 400)
         </script>
     </body>
 </html>
