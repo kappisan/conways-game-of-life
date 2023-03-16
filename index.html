@@ -23,8 +23,8 @@
             }
 
             .box{
-                width: 12.5%;
-                height: 12.5%;
+                width: 10%;
+                height: 10%;
                 font-size: 2vw;
                 line-height: 12vw;
             }
@@ -51,7 +51,7 @@
             // Define the grid size
             const ROWS = 10;
             const COLS = 10;
-            const STEPS = 10;
+            const STEPS = 20;
 
             let board = document.getElementById("board");
 
@@ -78,6 +78,7 @@
                 for (let i = 0; i < ROWS; i++) {
                     nextGrid[i] = new Array(COLS);
                     for (let j = 0; j < COLS; j++) {
+
                         // Count the number of live neighbors
                         let liveNeighbors = 0;
                         for (let x = -1; x <= 1; x++) {
@@ -102,11 +103,16 @@
                                 }
                             }
                         }
+                        
+                        let square = document.querySelectorAll(`.row-${i}`, `.col-${j}`)[0];
+
                         // Apply the rules of Conway's Game of Life
                         if (grid[i][j] === 1 && (liveNeighbors < 2 || liveNeighbors > 3)) {
                             nextGrid[i][j] = 0;
+                            square.classList.remove("alive");
                         } else if (grid[i][j] === 0 && liveNeighbors === 3) {
                             nextGrid[i][j] = 1;
+                            square.classList.add("alive");
                         } else {
                             nextGrid[i][j] = grid[i][j];
                         }
@@ -126,7 +132,7 @@
                 printGrid();
                 step++;
                 if (step > STEPS) clearInterval(iterations);
-            }, 400)
+            }, 1000)
         </script>
     </body>
 </html>
