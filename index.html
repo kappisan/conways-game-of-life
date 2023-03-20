@@ -4,7 +4,7 @@
 
         <style>
 
-            .board{
+            .board {
                 position: relative;
                 top: 0;
                 right: 0;
@@ -22,14 +22,14 @@
                 font-size: 0;
             }
 
-            .box{
+            .box {
                 width: 10%;
                 height: 10%;
                 font-size: 2vw;
                 line-height: 12vw;
             }
 
-            .box:nth-child(n+1):nth-child(-n+16){
+            .box:nth-child(n+1):nth-child(-n+16) {
                 color: #222;
             }
 
@@ -43,15 +43,15 @@
     <body>
 
         <div id="board" class="board">
-
+            <!-- will get programatically filled with squares -->
         </div> 
-
 
         <script>
             // Define the grid size
             const ROWS = 10;
             const COLS = 10;
-            const STEPS = 20;
+            const STEPS = 100;
+            const SPEED = 10;
 
             let board = document.getElementById("board");
 
@@ -66,6 +66,21 @@
                     board.appendChild(node);
                 }
             }
+
+            console.log("grid", grid);
+
+            grid = [
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 1, 1, 0, 0],
+                [0, 0, 0, 0, 0, 1, 0, 1, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 1, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+            ]
 
             // Define a function to print the grid to the console
             function printGrid() {
@@ -104,17 +119,21 @@
                             }
                         }
                         
-                        let square = document.querySelectorAll(`.row-${i}`, `.col-${j}`)[0];
+                        let square = document.querySelectorAll(`.row-${i}.column-${j}`)[0];
 
                         // Apply the rules of Conway's Game of Life
                         if (grid[i][j] === 1 && (liveNeighbors < 2 || liveNeighbors > 3)) {
                             nextGrid[i][j] = 0;
-                            square.classList.remove("alive");
                         } else if (grid[i][j] === 0 && liveNeighbors === 3) {
                             nextGrid[i][j] = 1;
-                            square.classList.add("alive");
                         } else {
                             nextGrid[i][j] = grid[i][j];
+                        }
+
+                        if (nextGrid[i][j] == 1) {
+                            square.classList.add("alive");
+                        } else {
+                            square.classList.remove("alive");
                         }
                     }
                 }
@@ -132,7 +151,7 @@
                 printGrid();
                 step++;
                 if (step > STEPS) clearInterval(iterations);
-            }, 1000)
+            }, 1000 / SPEED)
         </script>
     </body>
 </html>
